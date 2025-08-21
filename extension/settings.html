@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="settingsTitle">设置</title>
+  <style>
+    body { width: 100vw; min-height: 100vh; padding: 20px; font-family: Arial, sans-serif; margin: 0; box-sizing: border-box; }
+    .header { margin-bottom: 30px; }
+    .header h1 { margin: 0; color: #333; }
+    .setting-group { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
+    .setting-group h3 { margin: 0 0 15px 0; color: #555; }
+    .setting-item { margin: 10px 0; display: flex; align-items: center; }
+    .setting-item label { margin-left: 8px; cursor: pointer; }
+    .setting-item input[type="checkbox"] { margin-right: 8px; }
+    .setting-item input[type="number"] { width: 80px; padding: 4px; margin: 0 8px; border: 1px solid #ccc; border-radius: 3px; }
+    .btn { color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; }
+    .save-btn { background: #28a745; }
+    .save-btn:hover { background: #218838; }
+    .export-btn { background: #007bff; }
+    .export-btn:hover { background: #0056b3; }
+    .import-btn { background: #6c757d; }
+    .import-btn:hover { background: #545b62; }
+    .button-group { margin-top: 20px; }
+    .status { margin-top: 10px; padding: 8px; border-radius: 4px; display: none; }
+    .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    #importFile { display: none; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 data-i18n="settingsTitle">设置</h1>
+  </div>
+
+  <div class="setting-group">
+    <h3 data-i18n="logSettings">日志设置</h3>
+    
+    <div class="setting-item">
+      <input type="checkbox" id="enableConnectionErrors" checked>
+      <label for="enableConnectionErrors" data-i18n="enableConnectionErrors">记录连接错误</label>
+    </div>
+    
+    <div class="setting-item">
+      <input type="checkbox" id="enableRequestErrors" checked>
+      <label for="enableRequestErrors" data-i18n="enableRequestErrors">记录请求错误</label>
+    </div>
+    
+    <div class="setting-item">
+      <label data-i18n="httpStatusThreshold">HTTP状态码阈值:</label>
+      <input type="number" id="httpStatusThreshold" value="400" min="100" max="599">
+      <span data-i18n="httpStatusThresholdDesc">(记录大于等于此值的响应)</span>
+    </div>
+  </div>
+
+  <div class="setting-group">
+    <h3 data-i18n="configManagement">配置管理</h3>
+    
+    <div class="button-group">
+      <button class="btn export-btn" id="exportConfig" data-i18n="exportConfig">导出配置</button>
+      <button class="btn import-btn" id="importConfig" data-i18n="importConfig">导入配置</button>
+      <input type="file" id="importFile" accept=".json">
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button class="btn save-btn" id="saveSettings" data-i18n="saveSettings">保存设置</button>
+  </div>
+  
+  <div class="status" id="saveStatus"></div>
+
+  <script src="i18n.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

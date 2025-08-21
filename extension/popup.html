@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { width: 350px; padding: 10px; font-family: Arial, sans-serif; }
+    .proxy-group { margin-bottom: 15px; }
+    .proxy-group h3 { margin: 0 0 8px 0; font-size: 14px; color: #333; }
+    .proxy-option { margin: 5px 0; }
+    .proxy-option input[type="radio"] { margin-right: 8px; }
+    .proxy-option label { cursor: pointer; font-size: 13px; }
+    .current-status { background: #f0f0f0; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-size: 12px; }
+    .config-input { margin-left: 24px; margin-top: 5px; display: none; }
+    .config-input input { width: 280px; padding: 4px; font-size: 12px; border: 1px solid #ccc; border-radius: 3px; }
+    .config-input.show { display: block; }
+    .no-proxy-input { margin-top: 5px; }
+    .name-input { width: 120px; padding: 2px; font-size: 11px; border: 1px solid #ddd; border-radius: 2px; margin-left: 5px; }
+    .proxy-label { display: inline-flex; align-items: center; }
+    .log-button { background: #4285f4; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 10px; }
+    .log-button:hover { background: #3367d6; }
+  </style>
+</head>
+<body>
+  <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+    <button class="log-button" id="viewLogs" data-i18n="viewLogs"></button>
+    <button class="log-button" id="openSettings" data-i18n="settings" style="background: #6c757d;"></button>
+  </div>
+  
+  <div class="current-status">
+    <span data-i18n="currentStatus"></span>: <span id="currentProxy" data-i18n="checking"></span>
+  </div>
+  
+  <div class="proxy-group">
+    <h3 data-i18n="basicSettings"></h3>
+    <div class="proxy-option">
+      <input type="radio" id="direct" name="proxy" value="direct">
+      <label for="direct" class="proxy-label">
+        <span class="proxy-name" id="direct-name" data-i18n="direct"></span>
+        <input type="text" class="name-input" id="direct-rename" data-i18n-placeholder="rename" style="display:none;">
+      </label>
+    </div>
+    <div class="proxy-option">
+      <input type="radio" id="system" name="proxy" value="system">
+      <label for="system" class="proxy-label">
+        <span class="proxy-name" id="system-name" data-i18n="system"></span>
+        <input type="text" class="name-input" id="system-rename" data-i18n-placeholder="rename" style="display:none;">
+      </label>
+    </div>
+  </div>
+
+  <div class="proxy-group">
+    <h3 data-i18n="pacProxy"></h3>
+    <div class="proxy-option">
+      <input type="radio" id="pac1" name="proxy" value="pac1">
+      <label for="pac1" class="proxy-label">
+        <span class="proxy-name" id="pac1-name">PAC 1</span>
+        <input type="text" class="name-input" id="pac1-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="pac1-config">
+        <input type="text" id="pac1-url" data-i18n-placeholder="pacScriptUrl" value="http://example.com/pac1.pac">
+      </div>
+    </div>
+    <div class="proxy-option">
+      <input type="radio" id="pac2" name="proxy" value="pac2">
+      <label for="pac2" class="proxy-label">
+        <span class="proxy-name" id="pac2-name">PAC 2</span>
+        <input type="text" class="name-input" id="pac2-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="pac2-config">
+        <input type="text" id="pac2-url" data-i18n-placeholder="pacScriptUrl" value="http://example.com/pac2.pac">
+      </div>
+    </div>
+    <div class="proxy-option">
+      <input type="radio" id="pac3" name="proxy" value="pac3">
+      <label for="pac3" class="proxy-label">
+        <span class="proxy-name" id="pac3-name">PAC 3</span>
+        <input type="text" class="name-input" id="pac3-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="pac3-config">
+        <input type="text" id="pac3-url" data-i18n-placeholder="pacScriptUrl" value="http://example.com/pac3.pac">
+      </div>
+    </div>
+  </div>
+
+  <div class="proxy-group">
+    <h3 data-i18n="httpProxy"></h3>
+    <div class="proxy-option">
+      <input type="radio" id="http1" name="proxy" value="http1">
+      <label for="http1" class="proxy-label">
+        <span class="proxy-name" id="http1-name">HTTP 1</span>
+        <input type="text" class="name-input" id="http1-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="http1-config">
+        <input type="text" id="http1-server" data-i18n-placeholder="proxyAddress" value="127.0.0.1:8080">
+        <div class="no-proxy-input">
+          <input type="text" id="http1-bypass" data-i18n-placeholder="noProxyAddress" value="localhost,127.0.0.1">
+        </div>
+      </div>
+    </div>
+    <div class="proxy-option">
+      <input type="radio" id="http2" name="proxy" value="http2">
+      <label for="http2" class="proxy-label">
+        <span class="proxy-name" id="http2-name">HTTP 2</span>
+        <input type="text" class="name-input" id="http2-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="http2-config">
+        <input type="text" id="http2-server" data-i18n-placeholder="proxyAddress" value="127.0.0.1:8081">
+        <div class="no-proxy-input">
+          <input type="text" id="http2-bypass" data-i18n-placeholder="noProxyAddress" value="localhost,127.0.0.1">
+        </div>
+      </div>
+    </div>
+    <div class="proxy-option">
+      <input type="radio" id="http3" name="proxy" value="http3">
+      <label for="http3" class="proxy-label">
+        <span class="proxy-name" id="http3-name">HTTP 3</span>
+        <input type="text" class="name-input" id="http3-rename" data-i18n-placeholder="rename">
+      </label>
+      <div class="config-input" id="http3-config">
+        <input type="text" id="http3-server" data-i18n-placeholder="proxyAddress" value="127.0.0.1:8082">
+        <div class="no-proxy-input">
+          <input type="text" id="http3-bypass" data-i18n-placeholder="noProxyAddress" value="localhost,127.0.0.1">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

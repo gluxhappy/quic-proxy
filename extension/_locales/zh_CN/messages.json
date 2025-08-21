@@ -1,0 +1,137 @@
+{
+  "extName": {
+    "message": "代理切换器"
+  },
+  "extDescription": {
+    "message": "快速切换浏览器代理设置"
+  },
+  "currentStatus": {
+    "message": "当前状态"
+  },
+  "checking": {
+    "message": "检查中..."
+  },
+  "viewLogs": {
+    "message": "查看连接错误日志"
+  },
+  "basicSettings": {
+    "message": "基本设置"
+  },
+  "direct": {
+    "message": "直连 (DIRECT)"
+  },
+  "system": {
+    "message": "系统代理 (SYSTEM)"
+  },
+  "pacProxy": {
+    "message": "PAC 代理"
+  },
+  "httpProxy": {
+    "message": "HTTP 代理"
+  },
+  "rename": {
+    "message": "重命名"
+  },
+  "pacScriptUrl": {
+    "message": "PAC脚本URL"
+  },
+  "proxyAddress": {
+    "message": "代理地址:端口"
+  },
+  "noProxyAddress": {
+    "message": "不使用代理的地址 (可选)"
+  },
+  "proxyErrorLogs": {
+    "message": "代理错误日志"
+  },
+  "refresh": {
+    "message": "刷新"
+  },
+  "clearLogs": {
+    "message": "清空日志"
+  },
+  "time": {
+    "message": "时间"
+  },
+  "type": {
+    "message": "类型"
+  },
+  "message": {
+    "message": "消息"
+  },
+  "details": {
+    "message": "详细信息"
+  },
+  "noLogs": {
+    "message": "暂无错误日志"
+  },
+  "loading": {
+    "message": "正在加载日志..."
+  },
+  "confirmClear": {
+    "message": "确定要清空所有日志吗？"
+  },
+  "proxyInitialized": {
+    "message": "代理切换器已初始化"
+  },
+  "proxySetError": {
+    "message": "代理设置错误"
+  },
+  "networkRequestFailed": {
+    "message": "网络请求失败"
+  },
+  "httpErrorResponse": {
+    "message": "HTTP错误响应"
+  },
+  "unknown": {
+    "message": "未知"
+  },
+  "none": {
+    "message": "无"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "settingsTitle": {
+    "message": "设置"
+  },
+  "logSettings": {
+    "message": "日志设置"
+  },
+  "enableConnectionErrors": {
+    "message": "记录连接错误"
+  },
+  "enableRequestErrors": {
+    "message": "记录请求错误"
+  },
+  "httpStatusThreshold": {
+    "message": "HTTP状态码阈值"
+  },
+  "httpStatusThresholdDesc": {
+    "message": "(记录大于等于此值的响应)"
+  },
+  "saveSettings": {
+    "message": "保存设置"
+  },
+  "settingsSaved": {
+    "message": "设置已保存"
+  },
+  "configManagement": {
+    "message": "配置管理"
+  },
+  "exportConfig": {
+    "message": "导出配置"
+  },
+  "importConfig": {
+    "message": "导入配置"
+  },
+  "configExported": {
+    "message": "配置已导出"
+  },
+  "configImported": {
+    "message": "配置已导入"
+  },
+  "importError": {
+    "message": "导入失败：文件格式错误"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "extName": {
+    "message": "Proxy Switcher"
+  },
+  "extDescription": {
+    "message": "Quick switch browser proxy settings"
+  },
+  "currentStatus": {
+    "message": "Current Status"
+  },
+  "checking": {
+    "message": "Checking..."
+  },
+  "viewLogs": {
+    "message": "View Request Error Logs"
+  },
+  "basicSettings": {
+    "message": "Basic Settings"
+  },
+  "direct": {
+    "message": "Direct (DIRECT)"
+  },
+  "system": {
+    "message": "System Proxy (SYSTEM)"
+  },
+  "pacProxy": {
+    "message": "PAC Proxy"
+  },
+  "httpProxy": {
+    "message": "HTTP Proxy"
+  },
+  "rename": {
+    "message": "Rename"
+  },
+  "pacScriptUrl": {
+    "message": "PAC Script URL"
+  },
+  "proxyAddress": {
+    "message": "Proxy Address:Port"
+  },
+  "noProxyAddress": {
+    "message": "No proxy addresses (optional)"
+  },
+  "proxyErrorLogs": {
+    "message": "Proxy Error Logs"
+  },
+  "refresh": {
+    "message": "Refresh"
+  },
+  "clearLogs": {
+    "message": "Clear Logs"
+  },
+  "time": {
+    "message": "Time"
+  },
+  "type": {
+    "message": "Type"
+  },
+  "message": {
+    "message": "Message"
+  },
+  "details": {
+    "message": "Details"
+  },
+  "noLogs": {
+    "message": "No error logs"
+  },
+  "loading": {
+    "message": "Loading logs..."
+  },
+  "confirmClear": {
+    "message": "Are you sure you want to clear all logs?"
+  },
+  "proxyInitialized": {
+    "message": "Proxy switcher initialized"
+  },
+  "proxySetError": {
+    "message": "Proxy setting error"
+  },
+  "networkRequestFailed": {
+    "message": "Network request failed"
+  },
+  "httpErrorResponse": {
+    "message": "HTTP error response"
+  },
+  "unknown": {
+    "message": "Unknown"
+  },
+  "none": {
+    "message": "None"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "settingsTitle": {
+    "message": "Settings"
+  },
+  "logSettings": {
+    "message": "Log Settings"
+  },
+  "enableConnectionErrors": {
+    "message": "Log connection errors"
+  },
+  "enableRequestErrors": {
+    "message": "Log request errors"
+  },
+  "httpStatusThreshold": {
+    "message": "HTTP status threshold"
+  },
+  "httpStatusThresholdDesc": {
+    "message": "(log responses >= this value)"
+  },
+  "saveSettings": {
+    "message": "Save Settings"
+  },
+  "settingsSaved": {
+    "message": "Settings saved"
+  },
+  "configManagement": {
+    "message": "Configuration Management"
+  },
+  "exportConfig": {
+    "message": "Export Config"
+  },
+  "importConfig": {
+    "message": "Import Config"
+  },
+  "configExported": {
+    "message": "Configuration exported"
+  },
+  "configImported": {
+    "message": "Configuration imported"
+  },
+  "importError": {
+    "message": "Import failed: Invalid file format"
+  }
+}
