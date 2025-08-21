@@ -1,5 +1,6 @@
 package com.glux.proxyswitcher.service;
 
+import com.glux.proxyswitcher.util.CertificateUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -8,28 +9,31 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.ssl.util.SelfSignedCertificate;
-import io.netty.incubator.codec.quic.*;
+import io.netty.incubator.codec.quic.InsecureQuicTokenHandler;
+import io.netty.incubator.codec.quic.QuicServerCodecBuilder;
+import io.netty.incubator.codec.quic.QuicSslContext;
+import io.netty.incubator.codec.quic.QuicStreamChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class QuicProxy {
     private static final Logger logger = LoggerFactory.getLogger(QuicProxy.class);
 
     public static class ProxyClient {
+        private final String tcpHost;
         private final int tcpPort;
         private final String quicHost;
         private final int quicPort;
         private EventLoopGroup group;
         private AutoConnectQuicConnection autoConnectQuicConnection;
 
-        public ProxyClient(int tcpPort, String quicHost, int quicPort) {
+        public ProxyClient(String tcpHost, int tcpPort, String quicHost, int quicPort) {
+            this.tcpHost = tcpHost;
             this.tcpPort = tcpPort;
             this.quicHost = quicHost;
             this.quicPort = quicPort;
@@ -51,7 +55,7 @@ public class QuicProxy {
                         }
                     });
 
-            b.bind(tcpPort).sync();
+            b.bind(new InetSocketAddress(tcpHost, tcpPort)).sync();
             System.out.println("代理端启动，监听TCP端口: " + tcpPort);
         }
 
@@ -166,7 +170,9 @@ public class QuicProxy {
             super.channelInactive(ctx);
         }
     }
+
     public static class ProxyServer {
+        private final String quicHost;
         private final int quicPort;
         private final String targetHost;
         private final int targetPort;
@@ -175,7 +181,8 @@ public class QuicProxy {
         private Bootstrap tcpClientBootstrap = new Bootstrap();
         private EventLoopGroup tcpClientEventGroup = new NioEventLoopGroup(4);
 
-        public ProxyServer(int quicPort, String targetHost, int targetPort) {
+        public ProxyServer(String quicHost, int quicPort, String targetHost, int targetPort) {
+            this.quicHost = quicHost;
             this.quicPort = quicPort;
             this.targetHost = targetHost;
             this.targetPort = targetPort;
@@ -184,15 +191,11 @@ public class QuicProxy {
         public void start() throws Exception {
             tcpClientBootstrap.group(tcpClientEventGroup);
             quicServerBootstrap = new Bootstrap();
-            SelfSignedCertificate cert = new SelfSignedCertificate();
-            QuicSslContext sslContext = QuicSslContextBuilder.forServer(
-                            cert.privateKey(), null, cert.certificate())
-                    .applicationProtocols("http")
-                    .build();
+            QuicSslContext sslContext = CertificateUtil.createServerSslContext();
 
             ChannelHandler codec = new QuicServerCodecBuilder()
                     .sslContext(sslContext)
-                    .maxIdleTimeout(30000, TimeUnit.MILLISECONDS)
+                    .maxIdleTimeout(AutoConnectQuicConnection.DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .initialMaxData(10000000)
                     .initialMaxStreamDataBidirectionalLocal(1000000)
                     .initialMaxStreamDataBidirectionalRemote(1000000)
@@ -203,7 +206,7 @@ public class QuicProxy {
                     .streamHandler(new ChannelInitializer<QuicStreamChannel>() {
                         @Override
                         protected void initChannel(QuicStreamChannel ch) {
-                            ch.pipeline().addLast(new QuicToTcpHandler(targetHost, targetPort,tcpClientEventGroup));
+                            ch.pipeline().addLast(new QuicToTcpHandler(targetHost, targetPort, tcpClientEventGroup));
                         }
                     })
                     .build();
@@ -211,7 +214,7 @@ public class QuicProxy {
             quicServerBootstrap.group(group)
                     .channel(NioDatagramChannel.class)
                     .handler(codec)
-                    .bind(new InetSocketAddress(quicPort))
+                    .bind(new InetSocketAddress(quicHost, quicPort))
                     .sync();
 
             System.out.println("服务端启动，监听QUIC端口: " + quicPort);
@@ -226,7 +229,7 @@ public class QuicProxy {
         private final String targetHost;
         private final int targetPort;
         private final EventLoopGroup group;
-        private final CompletableFuture<Channel> tcpChannel=new CompletableFuture<>();
+        private final CompletableFuture<Channel> tcpChannel = new CompletableFuture<>();
         private ChannelFuture channelFuture;
 
         public QuicToTcpHandler(String targetHost, int targetPort, EventLoopGroup group) {
@@ -237,7 +240,7 @@ public class QuicProxy {
 
         @Override
         public void channelActive(ChannelHandlerContext quicCtx) throws Exception {
-           channelFuture = new Bootstrap().group(group)
+            channelFuture = new Bootstrap().group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -259,7 +262,7 @@ public class QuicProxy {
                     })
                     .connect(targetHost, targetPort);
 
-           channelFuture
+            channelFuture
                     .addListener((ChannelFutureListener) future -> {
                         if (future.isSuccess()) {
                             logger.info("Server: tcp to target open success.");
