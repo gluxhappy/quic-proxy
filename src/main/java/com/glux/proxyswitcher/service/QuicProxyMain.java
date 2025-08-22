@@ -1,19 +1,21 @@
 package com.glux.proxyswitcher.service;
 
 import ch.qos.logback.classic.Level;
-import com.glux.proxyswitcher.util.CertificateGenerator;
+import com.glux.proxyswitcher.service.cert.CertificateGenerator;
+import com.glux.proxyswitcher.service.client.ProxyClient;
+import com.glux.proxyswitcher.service.server.ProxyServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class QuicProxyMain {
 
     public static void main(String[] args) throws Exception {
-        if ("trace".equalsIgnoreCase(System.getProperty("log.level", "error"))) {
+        if ("trace".equalsIgnoreCase(System.getProperty("logLevel", "error"))) {
             System.setProperty("javax.net.debug", "all");
         }
         Logger rootLogger = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         if (rootLogger instanceof ch.qos.logback.classic.Logger rl) {
-            String level = System.getProperty("log.level", "trace");
+            String level = System.getProperty("logLevel", "trace");
             rl.setLevel(Level.toLevel(level));
         }
         if (args.length < 1) {
@@ -36,7 +38,7 @@ public class QuicProxyMain {
             String quicHost = args[3];
             int quicPort = Integer.parseInt(args[4]);
 
-            QuicProxy.ProxyClient client = new QuicProxy.ProxyClient(tcpHost, tcpPort, quicHost, quicPort);
+            ProxyClient client = new ProxyClient(tcpHost, tcpPort, quicHost, quicPort);
             client.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(client::stop));
@@ -53,7 +55,7 @@ public class QuicProxyMain {
             String targetHost = args[3];
             int targetPort = Integer.parseInt(args[4]);
 
-            QuicProxy.ProxyServer server = new QuicProxy.ProxyServer(quicHost, quicPort, targetHost, targetPort);
+            ProxyServer server = new ProxyServer(quicHost, quicPort, targetHost, targetPort);
             server.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(server::stop));

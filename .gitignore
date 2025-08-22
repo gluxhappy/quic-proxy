@@ -33,3 +33,5 @@ build/
 .vscode/
 certs/
 docker-run.bat
+error.log
+output.log
